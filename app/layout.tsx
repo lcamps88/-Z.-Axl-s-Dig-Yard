@@ -14,7 +14,29 @@ export const metadata: Metadata = {
     "indoor play space", "Bethel CT", "children play", "emotional literacy",
     "sensory play", "birthday parties", "memberships", "CASEL", "trauma-informed",
   ],
-  openGraph: { type: "website", locale: "en_US", siteName: "Z. Axl's Dig Yard" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      { rel: "mask-icon", url: "/favicon-32x32.png" },
+    ],
+  },
+  manifest: "/manifest.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Z. Axl's Dig Yard",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Z. Axl's Dig Yard" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
