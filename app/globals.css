@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --font-script: 'Pacifico', cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F0F5F9;
+  color: #1E2D40;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-7 py-3 bg-forest text-white font-body font-bold text-sm tracking-wide rounded-pill transition-all duration-200 hover:bg-forest-dark shadow-soft focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-7 py-3 bg-white text-forest font-body font-bold text-sm tracking-wide rounded-pill border-2 border-forest transition-all duration-200 hover:bg-forest hover:text-white focus:outline-none;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center px-7 py-3 bg-gold text-dusk font-body font-bold text-sm tracking-wide rounded-pill transition-all duration-200 hover:bg-gold-dark shadow-soft focus:outline-none;
+  }
+  .btn-white {
+    @apply inline-flex items-center justify-center px-7 py-3 bg-white text-forest font-body font-bold text-sm tracking-wide rounded-pill transition-all duration-200 hover:bg-gold hover:text-dusk shadow-soft focus:outline-none;
+  }
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center px-7 py-3 border-2 border-white text-white font-body font-bold text-sm tracking-wide rounded-pill transition-all duration-200 hover:bg-white hover:text-forest focus:outline-none;
+  }
+
+  /* Layout */
+  .section-padding {
+    @apply px-6 md:px-12 lg:px-20 py-20 md:py-28;
+  }
+  .container-narrow {
+    @apply max-w-3xl mx-auto;
+  }
+  .container-wide {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Typography */
+  .label-tag {
+    @apply text-xs font-body font-bold tracking-[0.18em] uppercase text-forest;
+  }
+  .heading-display {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-dusk;
+  }
+  .heading-section {
+    @apply font-display text-3xl md:text-4xl font-bold leading-snug text-dusk;
+  }
+  .body-lead {
+    @apply font-body text-lg text-dusk-soft leading-relaxed;
+  }
+
+  /* Script accent */
+  .script-accent {
+    @apply font-script text-gold;
+    font-style: normal;
+  }
+
+  /* Cards */
+  .card-white {
+    @apply bg-white rounded-2xl p-8 shadow-card transition-shadow duration-300 hover:shadow-card-hover;
+  }
+  .card-sky {
+    @apply bg-sky-mist rounded-2xl p-8;
+  }
+  .card-forest {
+    @apply bg-forest rounded-2xl p-8 text-white;
+  }
+
+  /* Dividers */
+  .divider-dots {
+    @apply w-full overflow-hidden;
+  }
+}
+
+/* Wavy divider SVG helper */
+.wave-top {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-bottom {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+/* Dotted pattern background */
+.dotted-bg {
+  background-image: radial-gradient(circle, #A3C4DC 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+/* Focus rings */
+*:focus-visible {
+  outline: 2px solid #4A7C59;
+  outline-offset: 3px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F0F5F9; }
+::-webkit-scrollbar-thumb { background: #4A7C59; border-radius: 3px; }
+
+/* Prose styles */
+.prose-dig h2 { @apply font-display text-2xl md:text-3xl font-bold text-dusk mt-12 mb-4; }
+.prose-dig h3 { @apply font-display text-xl md:text-2xl font-semibold text-dusk mt-8 mb-3; }
+.prose-dig p { @apply font-body text-dusk-soft leading-relaxed mb-5; }
+.prose-dig ul { @apply list-disc list-inside space-y-2 mb-6; }
+.prose-dig ul li { @apply font-body text-dusk-soft; }
+.prose-dig strong { @apply font-bold text-dusk; }
