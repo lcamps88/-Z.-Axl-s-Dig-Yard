@@ -54,58 +54,66 @@ export default function HomePage() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-        {/* Background photo placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-br from-dusk via-dusk-soft to-forest" />
-        {/* Subtle overlay pattern */}
-        <div className="absolute inset-0 opacity-10 dotted-bg" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background photo — place your image at /public/images/hero-bg.jpg */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+        />
+        {/* Gradient overlays per design spec */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.00) 47.53%)",
+          }}
+        />
+        <div className="absolute inset-0 bg-[rgba(25,25,26,0.50)]" />
+        {/* Fallback for when no image is present */}
+        <div className="absolute inset-0 bg-gradient-to-br from-dusk via-dusk-soft to-forest -z-10" />
 
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-pill px-5 py-2 mb-8">
-              <Star size={13} className="text-gold fill-gold" />
-              <span className="font-body font-bold text-white text-xs tracking-widest uppercase">
-                Bethel, CT · Ages 18 months – 7 years
-              </span>
-              <Star size={13} className="text-gold fill-gold" />
-            </div>
-          </motion.div>
-
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-28">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-display font-bold text-white text-5xl md:text-6xl lg:text-7xl leading-tight mb-6"
+            transition={{ duration: 0.7 }}
+            className="font-quicksand font-bold text-white text-center capitalize mb-6"
+            style={{ fontSize: "clamp(3rem, 8vw, 6.625rem)", lineHeight: "120%" }}
           >
             Welcome To<br />
-            <span className="font-script text-gold">Z. Axl&apos;s Dig Yard</span>
+            Z.Axl&apos;s Dig Yard
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="font-body text-white/85 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="font-quicksand text-white text-center mx-auto mb-10"
+            style={{ fontSize: "1.5rem", fontWeight: 500, lineHeight: "1.875rem", maxWidth: "600px" }}
           >
-            A place where children dig deep into their feelings and discover who they are.
-            We believe big emotions deserve space to breathe.
+            A place where children dig deep into their feelings and discover who
+            they are. We believe big emotions deserve space to breathe.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
             className="flex flex-wrap items-center justify-center gap-4"
           >
-            <Link href="/play-options" className="btn-gold text-base px-9 py-4">
-              Join Us Today
+            <Link
+              href="/play-options"
+              className="inline-flex items-center gap-2 font-quicksand font-bold text-nav-text px-8 py-4 rounded-pill transition-opacity hover:opacity-85"
+              style={{ background: "#F1C872", fontSize: "1.05rem" }}
+            >
+              Join Us Today <ArrowRight size={18} />
             </Link>
-            <Link href="/our-mission" className="btn-outline-white text-base px-9 py-4">
-              Learn More
+            <Link
+              href="/our-mission"
+              className="inline-flex items-center gap-2 font-quicksand font-bold text-dusk px-8 py-4 rounded-pill transition-opacity hover:opacity-85"
+              style={{ background: "#C4B5ED", fontSize: "1.05rem" }}
+            >
+              Learn More <ArrowRight size={18} />
             </Link>
           </motion.div>
         </div>

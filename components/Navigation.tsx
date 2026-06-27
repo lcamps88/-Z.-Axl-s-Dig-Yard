@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
-const NAV_ITEMS = [
+const NAV_LEFT = [
   { label: "Home", href: "/" },
   { label: "Our Mission", href: "/our-mission" },
   {
@@ -23,6 +23,9 @@ const NAV_ITEMS = [
     ],
   },
   { label: "Plan Your Visit", href: "/plan-your-visit" },
+];
+
+const NAV_RIGHT = [
   {
     label: "Play & Celebrations",
     href: "/celebrations",
@@ -38,20 +41,77 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
+function NavItem({
+  item,
+  openDropdown,
+  setOpenDropdown,
+  pathname,
+}: {
+  item: (typeof NAV_LEFT)[number];
+  openDropdown: string | null;
+  setOpenDropdown: (v: string | null) => void;
+  pathname: string;
+}) {
+  if (!("children" in item) || !item.children) {
+    return (
+      <Link
+        href={item.href}
+        className={cn(
+          "font-quicksand font-bold text-[1.125rem] uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1",
+          pathname === item.href && "opacity-70"
+        )}
+      >
+        {item.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+        className={cn(
+          "flex items-center gap-1 font-quicksand font-bold text-[1.125rem] uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1"
+        )}
+      >
+        {item.label}
+        <ChevronDown
+          size={15}
+          className={cn("transition-transform duration-200", openDropdown === item.label && "rotate-180")}
+        />
+      </button>
+      <AnimatePresence>
+        {openDropdown === item.label && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 bg-white rounded-2xl shadow-card-hover py-2 border border-light-gray z-50"
+          >
+            {item.children.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                className="block px-5 py-2.5 font-quicksand font-semibold text-sm text-nav-text hover:bg-gold-light transition-colors"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
@@ -77,148 +137,125 @@ export default function Navigation() {
   }, []);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-white shadow-sm"
-      )}
-    >
-      <nav className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex items-center justify-between h-[72px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-11 h-11 bg-gold rounded-full flex items-center justify-center shrink-0 shadow-soft group-hover:scale-105 transition-transform">
-              {/* Excavator icon */}
-              <svg viewBox="0 0 36 36" fill="none" className="w-7 h-7">
-                <rect x="4" y="20" width="20" height="8" rx="2" fill="#1E2D40"/>
-                <rect x="6" y="22" width="6" height="4" rx="1" fill="#F0F5F9"/>
-                <rect x="22" y="18" width="10" height="4" rx="1" fill="#1E2D40"/>
-                <rect x="8" y="14" width="14" height="8" rx="2" fill="#3A6347"/>
-                <path d="M22 18 L30 12 L30 18" fill="#4A7C59"/>
-                <rect x="4" y="28" width="28" height="3" rx="1.5" fill="#1E2D40"/>
-                <circle cx="8" cy="30" r="2.5" fill="#3A6347"/>
-                <circle cx="24" cy="30" r="2.5" fill="#3A6347"/>
-              </svg>
-            </div>
-            <div className="leading-none">
-              <div className="font-display font-bold text-sm text-dusk leading-tight">
-                Z. Axl&apos;s
-              </div>
-              <div className="font-body text-[10px] font-bold tracking-widest uppercase text-forest">
-                Dig Yard
-              </div>
-            </div>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-3">
+      {/* Desktop pill navbar */}
+      <nav
+        ref={dropdownRef}
+        className="hidden lg:flex items-center justify-between max-w-[1400px] mx-auto bg-nav-gold px-6 py-2 gap-4"
+        style={{ borderRadius: "8.75rem" }}
+      >
+        {/* Left nav items */}
+        <div className="flex items-center gap-5">
+          {NAV_LEFT.map((item) => (
+            <NavItem
+              key={item.label}
+              item={item}
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}
+              pathname={pathname}
+            />
+          ))}
+        </div>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-0.5" ref={dropdownRef}>
-            {NAV_ITEMS.map((item) =>
-              item.children ? (
-                <div key={item.label} className="relative">
-                  <button
-                    onClick={() =>
-                      setOpenDropdown(openDropdown === item.label ? null : item.label)
-                    }
-                    className={cn(
-                      "flex items-center gap-1 px-3 py-2 text-[13px] font-body font-semibold text-dusk-soft hover:text-forest transition-colors rounded-lg hover:bg-forest-light",
-                      pathname.startsWith(item.href) && "text-forest"
-                    )}
-                  >
-                    {item.label}
-                    <ChevronDown
-                      size={13}
-                      className={cn(
-                        "transition-transform duration-200 text-forest",
-                        openDropdown === item.label && "rotate-180"
-                      )}
-                    />
-                  </button>
-                  <AnimatePresence>
-                    {openDropdown === item.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-2 w-60 bg-white rounded-2xl shadow-card-hover py-2 border border-light-gray"
-                      >
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="block px-5 py-2.5 text-[13px] font-body font-semibold text-dusk-soft hover:text-forest hover:bg-forest-light transition-colors"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={cn(
-                    "px-3 py-2 text-[13px] font-body font-semibold text-dusk-soft hover:text-forest transition-colors rounded-lg hover:bg-forest-light",
-                    pathname === item.href && "text-forest"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
-
-            {/* Portal Button */}
-            <div className="ml-3">
-              {user ? (
-                <Link href="/portal" className="btn-primary text-[13px] px-5 py-2.5">
-                  My Portal
-                </Link>
-              ) : (
-                <Link href="/login" className="btn-primary text-[13px] px-5 py-2.5">
-                  Membership Portal
-                </Link>
-              )}
-            </div>
+        {/* Center logo */}
+        <Link href="/" className="flex-shrink-0 mx-4">
+          <div className="flex flex-col items-center justify-center bg-white rounded-full w-[88px] h-[88px] shadow-soft border-4 border-white -my-4">
+            <span className="font-quicksand font-bold text-[8px] tracking-wider text-nav-text uppercase leading-none">Z. AXL&apos;S</span>
+            {/* Excavator SVG */}
+            <svg viewBox="0 0 44 36" fill="none" className="w-9 h-7 my-0.5">
+              <rect x="3" y="18" width="22" height="10" rx="2.5" fill="#1E2D40"/>
+              <rect x="5" y="20" width="8" height="6" rx="1.5" fill="#F0F5F9"/>
+              <rect x="14" y="20" width="4" height="3" rx="1" fill="#C8DFF0"/>
+              <rect x="24" y="15" width="12" height="5" rx="1.5" fill="#1E2D40"/>
+              <path d="M24 15 L36 8 L36 15" fill="#3A6347"/>
+              <rect x="3" y="28" width="32" height="3.5" rx="1.75" fill="#1E2D40"/>
+              <circle cx="8" cy="29" r="3" fill="#4A7C59"/>
+              <circle cx="8" cy="29" r="1.5" fill="#1E2D40"/>
+              <circle cx="28" cy="29" r="3" fill="#4A7C59"/>
+              <circle cx="28" cy="29" r="1.5" fill="#1E2D40"/>
+              {/* Heart detail */}
+              <path d="M18 14 C18 12.5 19 11.5 20 12 C21 11.5 22 12.5 22 14 L20 16.5 Z" fill="#E8896A"/>
+            </svg>
+            <span className="font-quicksand font-bold text-[8px] tracking-wider text-nav-text uppercase leading-none">DIG YARD</span>
           </div>
+        </Link>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden p-2 text-dusk rounded-lg hover:bg-forest-light transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+        {/* Right nav items */}
+        <div className="flex items-center gap-5">
+          {NAV_RIGHT.map((item) => (
+            <NavItem
+              key={item.label}
+              item={item}
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}
+              pathname={pathname}
+            />
+          ))}
+
+          {/* Portal button */}
+          <Link
+            href={user ? "/portal" : "/login"}
+            className="ml-2 font-quicksand font-bold text-sm uppercase text-white bg-nav-text px-5 py-2.5 whitespace-nowrap hover:opacity-80 transition-opacity"
+            style={{ borderRadius: "8.75rem" }}
           >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+            {user ? "My Portal" : "Membership Portal"}
+          </Link>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile bar */}
+      <div
+        className="lg:hidden flex items-center justify-between bg-nav-gold px-5 py-3"
+        style={{ borderRadius: "8.75rem" }}
+      >
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex flex-col items-center justify-center bg-white rounded-full w-10 h-10 border-2 border-white">
+            <svg viewBox="0 0 44 36" fill="none" className="w-6 h-5">
+              <rect x="3" y="18" width="22" height="10" rx="2.5" fill="#1E2D40"/>
+              <rect x="5" y="20" width="8" height="6" rx="1.5" fill="#F0F5F9"/>
+              <rect x="24" y="15" width="12" height="5" rx="1.5" fill="#1E2D40"/>
+              <path d="M24 15 L36 8 L36 15" fill="#3A6347"/>
+              <rect x="3" y="28" width="32" height="3.5" rx="1.75" fill="#1E2D40"/>
+              <circle cx="8" cy="29" r="3" fill="#4A7C59"/>
+              <circle cx="28" cy="29" r="3" fill="#4A7C59"/>
+            </svg>
+          </div>
+          <span className="font-quicksand font-bold text-nav-text text-sm uppercase tracking-wide">Z. Axl&apos;s Dig Yard</span>
+        </Link>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="text-nav-text p-1"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {/* Mobile dropdown */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-light-gray overflow-hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="lg:hidden mt-2 bg-white rounded-3xl shadow-card-hover overflow-hidden border border-light-gray"
           >
             <div className="px-6 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
-              {NAV_ITEMS.map((item) => (
+              {[...NAV_LEFT, ...NAV_RIGHT].map((item) => (
                 <div key={item.label}>
                   <Link
                     href={item.href}
-                    className="block py-3 text-sm font-body font-bold text-dusk border-b border-light-gray/50 hover:text-forest transition-colors"
+                    className="block py-3 font-quicksand font-bold text-sm uppercase text-nav-text border-b border-light-gray/50 hover:opacity-70 transition-opacity"
                   >
                     {item.label}
                   </Link>
-                  {item.children && (
+                  {"children" in item && item.children && (
                     <div className="pl-4 py-1 space-y-0.5">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block py-2 text-xs font-body font-semibold text-dusk-soft hover:text-forest"
+                          className="block py-2 font-quicksand text-xs font-semibold text-dusk-soft hover:text-forest"
                         >
                           {child.label}
                         </Link>
@@ -228,7 +265,10 @@ export default function Navigation() {
                 </div>
               ))}
               <div className="pt-4">
-                <Link href={user ? "/portal" : "/login"} className="btn-primary w-full text-center block">
+                <Link
+                  href={user ? "/portal" : "/login"}
+                  className="block text-center font-quicksand font-bold text-sm uppercase text-white bg-nav-text px-5 py-3 rounded-pill hover:opacity-80 transition-opacity"
+                >
                   {user ? "My Portal" : "Membership Portal"}
                 </Link>
               </div>

@@ -20,6 +20,9 @@ const config: Config = {
         "gold-light": "#FDF3CC",     // light gold bg
         "sand-warm": "#F4A261",      // orange card accent
         "coral": "#E8896A",          // coral accent
+        "nav-gold": "#F1C872",       // navbar pill background
+        "nav-text": "#4B4B4B",       // navbar text/icon color
+        "lavender": "#C4B5ED",       // hero secondary button
         "dusk": "#1E2D40",           // dark navy text
         "dusk-soft": "#3D5166",      // medium navy
         "mist": "#F0F5F9",           // near-white bg
@@ -38,6 +41,7 @@ const config: Config = {
         display: ["var(--font-display)", "Poppins", "sans-serif"],
         body: ["var(--font-body)", "Nunito", "sans-serif"],
         script: ["var(--font-script)", "Pacifico", "cursive"],
+        quicksand: ["Quicksand", "sans-serif"],
       },
       borderRadius: {
         pill: "9999px",
