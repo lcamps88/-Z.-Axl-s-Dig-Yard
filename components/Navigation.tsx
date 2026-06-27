@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import Logo from "@/public/logo-z-axl_dig_yard.png";
+import type { User } from "@supabase/supabase-js";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
-import type { User } from "@supabase/supabase-js";
+import { useEffect, useRef, useState } from "react";
 
 const NAV_LEFT = [
   { label: "Home", href: "/" },
@@ -57,7 +59,7 @@ function NavItem({
       <Link
         href={item.href}
         className={cn(
-          "font-quicksand font-bold text-[1.125rem] uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1",
+          "font-quicksand font-bold text-sm uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1",
           pathname === item.href && "opacity-70"
         )}
       >
@@ -71,7 +73,7 @@ function NavItem({
       <button
         onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
         className={cn(
-          "flex items-center gap-1 font-quicksand font-bold text-[1.125rem] uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1"
+          "flex items-center gap-1 font-quicksand font-bold text-sm uppercase text-nav-text hover:opacity-70 transition-opacity whitespace-nowrap px-1"
         )}
       >
         {item.label}
@@ -141,11 +143,11 @@ export default function Navigation() {
       {/* Desktop pill navbar */}
       <nav
         ref={dropdownRef}
-        className="hidden lg:flex items-center justify-between max-w-[1400px] mx-auto bg-nav-gold px-6 py-2 gap-4"
-        style={{ borderRadius: "8.75rem" }}
+        className="hidden lg:flex items-center justify-between max-w-[1400px] mx-auto bg-nav-gold px-10 py-2 gap-3"
+        style={{ borderRadius: "8.75rem", overflow: "visible" }}
       >
         {/* Left nav items */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           {NAV_LEFT.map((item) => (
             <NavItem
               key={item.label}
@@ -158,30 +160,17 @@ export default function Navigation() {
         </div>
 
         {/* Center logo */}
-        <Link href="/" className="flex-shrink-0 mx-4">
-          <div className="flex flex-col items-center justify-center bg-white rounded-full w-[88px] h-[88px] shadow-soft border-4 border-white -my-4">
-            <span className="font-quicksand font-bold text-[8px] tracking-wider text-nav-text uppercase leading-none">Z. AXL&apos;S</span>
-            {/* Excavator SVG */}
-            <svg viewBox="0 0 44 36" fill="none" className="w-9 h-7 my-0.5">
-              <rect x="3" y="18" width="22" height="10" rx="2.5" fill="#1E2D40"/>
-              <rect x="5" y="20" width="8" height="6" rx="1.5" fill="#F0F5F9"/>
-              <rect x="14" y="20" width="4" height="3" rx="1" fill="#C8DFF0"/>
-              <rect x="24" y="15" width="12" height="5" rx="1.5" fill="#1E2D40"/>
-              <path d="M24 15 L36 8 L36 15" fill="#3A6347"/>
-              <rect x="3" y="28" width="32" height="3.5" rx="1.75" fill="#1E2D40"/>
-              <circle cx="8" cy="29" r="3" fill="#4A7C59"/>
-              <circle cx="8" cy="29" r="1.5" fill="#1E2D40"/>
-              <circle cx="28" cy="29" r="3" fill="#4A7C59"/>
-              <circle cx="28" cy="29" r="1.5" fill="#1E2D40"/>
-              {/* Heart detail */}
-              <path d="M18 14 C18 12.5 19 11.5 20 12 C21 11.5 22 12.5 22 14 L20 16.5 Z" fill="#E8896A"/>
-            </svg>
-            <span className="font-quicksand font-bold text-[8px] tracking-wider text-nav-text uppercase leading-none">DIG YARD</span>
+        <Link href="/" className="flex-shrink-0 mx-3">
+          <div
+            className="flex items-center justify-center bg-white rounded-full shadow-soft border-4 border-white"
+            style={{ width: "5.5rem", height: "5.5rem", marginTop: "-1.25rem", marginBottom: "-1.25rem" }}
+          >
+            <Image src={Logo} alt="Z. Axl's Dig Yard Logo" width={88} height={88} className="w-full h-full object-contain rounded-full" />
           </div>
         </Link>
 
         {/* Right nav items */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           {NAV_RIGHT.map((item) => (
             <NavItem
               key={item.label}
