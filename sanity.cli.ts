@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: "itkt3gf0",
     dataset: "production",
   },
+  studioHost: "axls-dig-yard",
 });
