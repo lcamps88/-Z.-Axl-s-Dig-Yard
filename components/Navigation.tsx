@@ -162,7 +162,7 @@ export default function Navigation() {
         {/* Center logo */}
         <Link href="/" className="flex-shrink-0 mx-3">
           <div
-            className="flex items-center justify-center bg-white rounded-full shadow-soft border-4 border-white"
+            className="flex items-center justify-center bg-white rounded-full shadow-soft p-1 border-4 border-white"
             style={{ width: "5.5rem", height: "5.5rem", marginTop: "-1.25rem", marginBottom: "-1.25rem" }}
           >
             <Image src={Logo} alt="Z. Axl's Dig Yard Logo" width={88} height={88} className="w-full h-full object-contain rounded-full" />
@@ -184,32 +184,26 @@ export default function Navigation() {
           {/* Portal button */}
           <Link
             href={user ? "/portal" : "/login"}
-            className="ml-2 font-quicksand font-bold text-sm uppercase text-white bg-nav-text px-5 py-2.5 whitespace-nowrap hover:opacity-80 transition-opacity"
+            className="ml-2 font-quicksand font-bold text-sm uppercase text-white bg-white px-5 py-2.5 whitespace-nowrap hover:opacity-80 transition-opacity"
             style={{ borderRadius: "8.75rem" }}
           >
-            {user ? "My Portal" : "Membership Portal"}
+            <span className="font-quicksand font-bold text-sm uppercase text-nav-text bg-white px-5 py-2.5 whitespace-nowrap hover:opacity-80 transition-opacity">
+              {user ? "My Portal" : "Membership Portal"}
+            </span>
           </Link>
         </div>
       </nav>
 
       {/* Mobile bar */}
       <div
-        className="lg:hidden flex items-center justify-between bg-nav-gold px-5 py-3"
+        className="lg:hidden flex items-center justify-between bg-nav-gold pl-2 pr-5 py-2"
         style={{ borderRadius: "8.75rem" }}
       >
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex flex-col items-center justify-center bg-white rounded-full w-10 h-10 border-2 border-white">
-            <svg viewBox="0 0 44 36" fill="none" className="w-6 h-5">
-              <rect x="3" y="18" width="22" height="10" rx="2.5" fill="#1E2D40"/>
-              <rect x="5" y="20" width="8" height="6" rx="1.5" fill="#F0F5F9"/>
-              <rect x="24" y="15" width="12" height="5" rx="1.5" fill="#1E2D40"/>
-              <path d="M24 15 L36 8 L36 15" fill="#3A6347"/>
-              <rect x="3" y="28" width="32" height="3.5" rx="1.75" fill="#1E2D40"/>
-              <circle cx="8" cy="29" r="3" fill="#4A7C59"/>
-              <circle cx="28" cy="29" r="3" fill="#4A7C59"/>
-            </svg>
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="w-11 h-11 shrink-0 flex items-center justify-center bg-white rounded-full border-2 border-white">
+            <Image src={Logo} alt="Z. Axl's Dig Yard Logo" width={54} height={54} className="w-full h-full object-contain rounded-full" />
           </div>
-          <span className="font-quicksand font-bold text-nav-text text-sm uppercase tracking-wide">Z. Axl&apos;s Dig Yard</span>
+          <span className="font-quicksand font-bold text-nav-text text-xs uppercase tracking-wide">Z. Axl&apos;s Dig Yard</span>
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
