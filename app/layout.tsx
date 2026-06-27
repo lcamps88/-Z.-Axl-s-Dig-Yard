@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import AppShell from "@/components/AppShell";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
@@ -30,9 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-mist text-dusk">
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
+        <AppShell>{children}</AppShell>
         <Toaster
           position="bottom-center"
           toastOptions={{
