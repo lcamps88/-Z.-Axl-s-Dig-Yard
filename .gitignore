@@ -15,6 +15,7 @@ build/
 
 # Sanity
 .sanity/
+dist/
 
 # misc
 .DS_Store
