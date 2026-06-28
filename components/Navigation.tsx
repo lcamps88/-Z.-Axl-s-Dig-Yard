@@ -39,6 +39,16 @@ const NAV_RIGHT = [
       { label: "Programming", href: "/programming" },
     ],
   },
+  {
+    label: "Resources",
+    href: "/blog",
+    children: [
+      { label: "Blog", href: "/blog" },
+      { label: "Gallery", href: "/gallery" },
+      { label: "Testimonials", href: "/testimonials" },
+      { label: "FAQs", href: "/faqs" },
+    ],
+  },
   { label: "Memberships", href: "/play-options" },
   { label: "Contact", href: "/contact" },
 ];
