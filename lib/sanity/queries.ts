@@ -48,6 +48,6 @@ export async function getFAQs(category?: string) {
     : `*[_type == "faq"]`;
   return sanityClient.fetch(
     `${filter} | order(order asc) { _id, question, answer, category }`,
-    { category }
+    category ? { category } : {}
   );
 }
