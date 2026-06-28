@@ -150,14 +150,14 @@ export default function Navigation() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-3">
-      {/* Desktop pill navbar */}
+      {/* Desktop pill navbar — 3-col grid so logo is always centered */}
       <nav
         ref={dropdownRef}
-        className="hidden lg:flex items-center justify-between max-w-[1400px] mx-auto bg-nav-gold px-10 py-2 gap-3"
-        style={{ borderRadius: "8.75rem", overflow: "visible" }}
+        className="hidden lg:grid items-center max-w-[1400px] mx-auto bg-nav-gold px-8 py-2"
+        style={{ borderRadius: "8.75rem", overflow: "visible", gridTemplateColumns: "1fr auto 1fr" }}
       >
-        {/* Left nav items */}
-        <div className="flex items-center gap-4">
+        {/* Left nav items — right-aligned so they push toward center */}
+        <div className="flex items-center justify-end gap-3">
           {NAV_LEFT.map((item) => (
             <NavItem
               key={item.label}
@@ -169,18 +169,18 @@ export default function Navigation() {
           ))}
         </div>
 
-        {/* Center logo */}
-        <Link href="/" className="flex-shrink-0 mx-3">
+        {/* Center logo — always at true center */}
+        <Link href="/" className="flex-shrink-0 mx-4">
           <div
-            className="flex items-center justify-center bg-white rounded-full shadow-soft p-1 border-4 border-white"
+            className="flex items-center justify-center bg-white rounded-full shadow-soft border-4 border-white"
             style={{ width: "5.5rem", height: "5.5rem", marginTop: "-1.25rem", marginBottom: "-1.25rem" }}
           >
             <Image src={Logo} alt="Z. Axl's Dig Yard Logo" width={88} height={88} className="w-full h-full object-contain rounded-full" />
           </div>
         </Link>
 
-        {/* Right nav items */}
-        <div className="flex items-center gap-4">
+        {/* Right nav items — left-aligned so they push toward center */}
+        <div className="flex items-center justify-start gap-3">
           {NAV_RIGHT.map((item) => (
             <NavItem
               key={item.label}
