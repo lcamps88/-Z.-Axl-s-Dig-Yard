@@ -114,7 +114,7 @@ export default async function ProgrammingPage() {
                           rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
                           className="font-quicksand font-bold text-sm text-white bg-forest px-4 py-2 rounded-pill hover:bg-forest-dark transition-colors"
                         >
-                          {event.price === 0 ? "Register Free" : "Book"}
+                          {event.price === 0 ? "Book Now — Free" : event.price != null ? `Book — $${event.price}` : "Book Now"}
                         </Link>
                       )}
                     </div>

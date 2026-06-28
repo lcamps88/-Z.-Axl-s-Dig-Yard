@@ -125,7 +125,7 @@ export default async function SpecialEventsPage() {
                             rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
                             className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
                           >
-                            {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
+                            {event.price === 0 ? "Book Now — Free" : event.price != null ? `Book Now — $${event.price}` : "Book Now"}
                           </Link>
                         )}
                       </div>

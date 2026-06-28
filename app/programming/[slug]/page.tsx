@@ -44,7 +44,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   const contactFallback = `/contact?type=Special+Events&event=${encodeURIComponent(event.title)}`;
   const bookingHref = event.stripePaymentLink ?? contactFallback;
-  const bookLabel = event.price === 0 ? "Reserve a Spot — Free" : event.price != null ? `Book Now — $${event.price}` : "Book Now";
+  const bookLabel =
+    event.price === 0 ? "Book Now — Free" :
+    event.price != null ? `Book Now — $${event.price}` :
+    "Book Now";
 
   return (
     <>
