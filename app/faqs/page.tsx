@@ -46,9 +46,13 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
 export default function FAQsPage() {
   const [faqs, setFaqs] = useState<any[]>([]);
   const [active, setActive] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/faqs").then((r) => r.json()).then(setFaqs);
+    fetch("/api/faqs")
+      .then((r) => r.json())
+      .then((data) => { setFaqs(Array.isArray(data) ? data : []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const filtered = active === "all" ? faqs : faqs.filter((f) => f.category === active);
@@ -85,8 +89,10 @@ export default function FAQsPage() {
 
           <AnimatedSection delay={0.05}>
             <div className="bg-white rounded-3xl px-8 py-4 shadow-card">
-              {filtered.length === 0 ? (
+              {loading ? (
                 <p className="text-center py-10 font-quicksand text-dusk-soft">Loading…</p>
+              ) : filtered.length === 0 ? (
+                <p className="text-center py-10 font-quicksand text-dusk-soft">No FAQs found in this category.</p>
               ) : (
                 filtered.map((faq) => (
                   <AccordionItem key={faq._id} q={faq.question} a={faq.answer} />
