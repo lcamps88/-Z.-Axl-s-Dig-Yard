@@ -21,8 +21,17 @@ export async function getPost(slug: string) {
 export async function getEvents() {
   return sanityClient.fetch(
     `*[_type == "event" && eventDate >= now()] | order(eventDate asc) {
-      _id, title, slug, description, eventDate, image, price, capacity, isMembersOnly
+      _id, title, slug, description, eventDate, image, price, capacity, isMembersOnly, stripePaymentLink
     }`
+  );
+}
+
+export async function getEvent(slug: string) {
+  return sanityClient.fetch(
+    `*[_type == "event" && slug.current == $slug][0] {
+      _id, title, slug, description, body, eventDate, image, price, capacity, isMembersOnly, stripePaymentLink
+    }`,
+    { slug }
   );
 }
 

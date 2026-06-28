@@ -74,7 +74,9 @@ export default async function ProgrammingPage() {
                     {/* Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className="font-quicksand font-bold text-dusk">{event.title}</h3>
+                        <Link href={`/programming/${event.slug?.current}`} className="font-quicksand font-bold text-dusk hover:text-forest transition-colors">
+                          {event.title}
+                        </Link>
                         {event.isMembersOnly && (
                           <span className="flex items-center gap-1 bg-forest-light text-forest text-xs font-quicksand font-bold px-2 py-0.5 rounded-pill">
                             <Lock size={9} /> Members only
@@ -88,12 +90,22 @@ export default async function ProgrammingPage() {
                       </div>
                     </div>
 
-                    <Link
-                      href={event.stripePaymentLink ?? "/contact"}
-                      className="shrink-0 font-quicksand font-bold text-sm text-white bg-forest px-5 py-2 rounded-pill hover:bg-forest-dark transition-colors"
-                    >
-                      {event.price === 0 ? "Register Free" : "Book"}
-                    </Link>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Link
+                        href={`/programming/${event.slug?.current}`}
+                        className="font-quicksand font-bold text-sm text-forest border border-forest px-4 py-2 rounded-pill hover:bg-forest-light transition-colors"
+                      >
+                        Details
+                      </Link>
+                      <Link
+                        href={event.stripePaymentLink ?? "/contact"}
+                        target={event.stripePaymentLink ? "_blank" : undefined}
+                        rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
+                        className="font-quicksand font-bold text-sm text-white bg-forest px-4 py-2 rounded-pill hover:bg-forest-dark transition-colors"
+                      >
+                        {event.price === 0 ? "Register Free" : "Book"}
+                      </Link>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}

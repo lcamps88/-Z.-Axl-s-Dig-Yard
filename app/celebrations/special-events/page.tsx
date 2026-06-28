@@ -101,12 +101,22 @@ export default async function SpecialEventsPage() {
                         <p className="font-body text-sm text-dusk-soft leading-relaxed mb-6">{event.description}</p>
                       )}
 
-                      <Link
-                        href={event.stripePaymentLink ?? "/contact"}
-                        className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
-                      >
-                        {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
-                      </Link>
+                      <div className="flex flex-wrap gap-3">
+                        <Link
+                          href={`/programming/${event.slug?.current}`}
+                          className="inline-flex items-center font-quicksand font-bold text-sm text-forest border border-forest px-6 py-2.5 rounded-pill hover:bg-forest-light transition-colors"
+                        >
+                          View Details
+                        </Link>
+                        <Link
+                          href={event.stripePaymentLink ?? "/contact"}
+                          target={event.stripePaymentLink ? "_blank" : undefined}
+                          rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
+                          className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
+                        >
+                          {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </AnimatedSection>
