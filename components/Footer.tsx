@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
-import Logo from "@/public/logo-z-axl_dig_yard.png";
+import Logo from "@/public/footer-logo.png";
 import Image from "next/image";
 
 const QUICK_LINKS = [
@@ -34,7 +34,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_1fr_1fr] gap-10 items-start">
 
             {/* Logo */}
-            <div className="border border-light-gray rounded-sm overflow-hidden">
+            <div className="rounded-sm overflow-hidden">
               <Image
                 src={Logo}
                 alt="Z. Axl's Dig Yard Logo"
@@ -111,7 +111,7 @@ export default function Footer() {
                       href="https://facebook.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 bg-dusk rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                      className="w-9 h-9 bg-light-blue rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
                     >
                       <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                         <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -121,7 +121,7 @@ export default function Footer() {
                       href="https://instagram.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 bg-dusk rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                      className="w-9 h-9 bg-light-blue rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -138,9 +138,9 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar — dark navy */}
-      <div className="bg-dusk">
+      <div className="bg-light-blue">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="font-quicksand text-white/80 text-sm text-center md:text-left">
+          <p className="font-quicksand text-white text-sm text-center md:text-left">
             © {new Date().getFullYear()} Z. Axl&apos;s Dig Yard. All Rights Reserved.{" "}
             <span className="hidden md:inline">|</span>{" "}
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>{" "}

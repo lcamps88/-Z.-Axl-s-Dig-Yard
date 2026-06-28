@@ -2,108 +2,117 @@ import type { Metadata } from "next";
 import PageHero from "@/components/ui/PageHero";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Link from "next/link";
+import { getEvents } from "@/lib/sanity/queries";
+import { Calendar, DollarSign, Users, Lock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Special Events",
-  description:
-    "Spectacular themed events at Z. Axl's Dig Yard. Members receive 24-hour early access and 10% off every ticket.",
+  description: "Spectacular themed events at Z. Axl's Dig Yard. Members receive 24-hour early access and 10% off every ticket.",
 };
 
-export default function SpecialEventsPage() {
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric",
+  });
+}
+function formatTime(dateStr: string) {
+  return new Date(dateStr).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+}
+
+export default async function SpecialEventsPage() {
+  const events = await getEvents();
+
   return (
     <>
       <PageHero
         tag="Special Events"
         title="Sometimes, play is pure spectacle."
-        subtitle="During our special events, we intentionally set aside our 'Museum-Calm' expectations to make room for high-energy wonder."
+        subtitle="During our special events, we set aside our 'Museum-Calm' expectations to make room for high-energy wonder."
       />
 
-      {/* About special events */}
-      <section className="section-padding bg-cream">
-        <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <AnimatedSection direction="left">
-              <p className="label-tag mb-4">The Z. Axl&apos;s Event Experience</p>
-              <h2 className="heading-section mb-6">
-                Vibrant, high-energy, and intentionally lively.
-              </h2>
-              <div className="space-y-5 body-lead">
-                <p>
-                  While the science of emotional literacy is the foundation of our daily
-                  rhythm, our Special Events are where we let the blueprints fly out the
-                  window. These sessions are designed for families to simply be together in a
-                  space transformed by spectacular imagination.
-                </p>
-                <p>
-                  Our founder has a deep-seated love for a well-executed theme. She believes
-                  that every celebration should be as spectacular as it sounds — vibrant,
-                  high-energy, and intentionally lively (unless otherwise noted).
-                </p>
-              </div>
-            </AnimatedSection>
+      {/* Member perks banner */}
+      <div className="bg-forest text-white py-4 px-6 text-center">
+        <p className="font-quicksand font-bold text-sm">
+          Members get 24-hour early access + 10% off every ticket.{" "}
+          <Link href="/play-options" className="underline hover:no-underline ml-1">Become a member →</Link>
+        </p>
+      </div>
 
-            <AnimatedSection direction="right" delay={0.15}>
-              <div className="space-y-5">
-                {[
-                  {
-                    label: "Members First",
-                    body: "Z. Axl Members receive 24-hour early access to all event bookings and a 10% discount on every ticket. Check our calendar regularly — when we theme, we theme spectacularly.",
-                  },
-                  {
-                    label: "Separate Registration",
-                    body: "Special events require a separate registration fee from your regular membership or drop-in pass.",
-                  },
-                  {
-                    label: "What's Included",
-                    body: "Pinterest-perfect décor, specialized hosts, and stress-free setup. Our events are fully produced so you can show up and simply enjoy.",
-                  },
-                ].map((item) => (
-                  <div key={item.label} className="card-soft">
-                    <p className="label-tag mb-2">{item.label}</p>
-                    <p className="font-body text-sm text-warm-gray leading-relaxed">
-                      {item.body}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming Events placeholder */}
-      <section className="section-padding bg-cream-dark">
+      <section className="section-padding bg-mist">
         <div className="container-wide">
           <AnimatedSection>
-            <p className="label-tag mb-4">Upcoming Events</p>
-            <h2 className="heading-section mb-12">What&apos;s on the calendar.</h2>
+            <h2 className="font-quicksand font-bold text-3xl text-dusk mb-10">Upcoming Events</h2>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.1}>
-            <div className="bg-charcoal text-cream p-12 text-center">
-              <p className="font-display text-3xl font-light mb-4">
-                Events Coming Soon
-              </p>
-              <p className="font-body text-cream/60 mb-8 max-w-md mx-auto">
-                Our first spectacular events are in the works. Become a member now to ensure
-                you get 24-hour early access when they drop.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  href="/play-options"
-                  className="inline-flex items-center justify-center px-7 py-3 bg-sand text-charcoal font-body font-medium text-sm hover:bg-earth hover:text-cream transition-colors"
-                >
-                  Become a Member
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center px-7 py-3 border border-cream/30 text-cream font-body font-medium text-sm hover:bg-cream/10 transition-colors"
-                >
-                  Get Notified
-                </Link>
+          {events.length === 0 ? (
+            <AnimatedSection delay={0.1}>
+              <div className="bg-dusk text-white rounded-3xl p-12 text-center max-w-2xl mx-auto">
+                <p className="font-quicksand font-bold text-2xl mb-4">Events Coming Soon</p>
+                <p className="font-body text-white/70 mb-8">
+                  Our first spectacular events are in the works. Become a member now to get 24-hour early access when they drop.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link href="/play-options" className="inline-flex items-center px-7 py-3 bg-nav-gold text-nav-text font-quicksand font-bold text-sm rounded-pill hover:opacity-85 transition-opacity">
+                    Become a Member
+                  </Link>
+                  <Link href="/contact" className="inline-flex items-center px-7 py-3 border border-white/30 text-white font-quicksand font-bold text-sm rounded-pill hover:bg-white/10 transition-colors">
+                    Get Notified
+                  </Link>
+                </div>
               </div>
+            </AnimatedSection>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-8">
+              {events.map((event: any, i: number) => (
+                <AnimatedSection key={event._id} delay={i * 0.08}>
+                  <div className="bg-white rounded-3xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow">
+                    {/* Color banner */}
+                    <div className="h-3 bg-gradient-to-r from-nav-gold to-forest" />
+                    <div className="p-7">
+                      <div className="flex items-start justify-between gap-4 mb-4">
+                        <h3 className="font-quicksand font-bold text-dusk text-xl leading-snug">{event.title}</h3>
+                        {event.isMembersOnly && (
+                          <span className="flex items-center gap-1 bg-forest-light text-forest text-xs font-quicksand font-bold px-3 py-1 rounded-pill shrink-0">
+                            <Lock size={10} /> Members
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="space-y-2 mb-5">
+                        <div className="flex items-center gap-2 text-dusk-soft text-sm font-quicksand">
+                          <Calendar size={14} className="text-forest shrink-0" />
+                          {formatDate(event.eventDate)} · {formatTime(event.eventDate)}
+                        </div>
+                        {event.price != null && (
+                          <div className="flex items-center gap-2 text-dusk-soft text-sm font-quicksand">
+                            <DollarSign size={14} className="text-forest shrink-0" />
+                            {event.price === 0 ? "Free" : `$${event.price} per family`}
+                          </div>
+                        )}
+                        {event.capacity && (
+                          <div className="flex items-center gap-2 text-dusk-soft text-sm font-quicksand">
+                            <Users size={14} className="text-forest shrink-0" />
+                            Limited to {event.capacity} families
+                          </div>
+                        )}
+                      </div>
+
+                      {event.description && (
+                        <p className="font-body text-sm text-dusk-soft leading-relaxed mb-6">{event.description}</p>
+                      )}
+
+                      <Link
+                        href={event.stripePaymentLink ?? "/contact"}
+                        className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
+                      >
+                        {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
+                      </Link>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
             </div>
-          </AnimatedSection>
+          )}
         </div>
       </section>
     </>

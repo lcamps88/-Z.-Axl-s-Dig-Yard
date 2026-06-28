@@ -78,7 +78,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             className="font-quicksand font-bold text-white text-center capitalize mb-6"
-            style={{ fontSize: "clamp(3rem, 8vw, 6.625rem)", lineHeight: "120%" }}
+            style={{ fontSize: "clamp(3rem, 8vw, 6.625rem)", lineHeight: "100%" }}
           >
             Welcome To<br />
             Z.Axl&apos;s Dig Yard
@@ -89,7 +89,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="font-quicksand text-white text-center mx-auto mb-10"
-            style={{ fontSize: "1.5rem", fontWeight: 500, lineHeight: "1.875rem", maxWidth: "600px" }}
+            style={{ fontSize: "1.125rem", fontWeight: 500, lineHeight: "1.875rem", maxWidth: "600px" }}
           >
             A place where children dig deep into their feelings and discover who
             they are. We believe big emotions deserve space to breathe.

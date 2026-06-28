@@ -27,6 +27,7 @@ const config: Config = {
         "dusk-soft": "#3D5166",      // medium navy
         "mist": "#F0F5F9",           // near-white bg
         "white-pure": "#FFFFFF",
+        "light-blue": "#446C9E",
         // Legacy support
         cream: "#FAF6F0",
         "cream-dark": "#F0EAE0",
