@@ -3,7 +3,8 @@ import PageHero from "@/components/ui/PageHero";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Link from "next/link";
 import { getEvents } from "@/lib/sanity/queries";
-import { Calendar, DollarSign, Users, Lock, BookOpen, Users as UsersIcon } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { Calendar, Lock, BookOpen, Users as UsersIcon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Programming",
@@ -20,7 +21,9 @@ function formatTime(dateStr: string) {
 }
 
 export default async function ProgrammingPage() {
-  const events = await getEvents();
+  const [events, supabase] = await Promise.all([getEvents(), createClient()]);
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
 
   return (
     <>
@@ -97,14 +100,23 @@ export default async function ProgrammingPage() {
                       >
                         Details
                       </Link>
-                      <Link
-                        href={event.stripePaymentLink ?? "/contact"}
-                        target={event.stripePaymentLink ? "_blank" : undefined}
-                        rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
-                        className="font-quicksand font-bold text-sm text-white bg-forest px-4 py-2 rounded-pill hover:bg-forest-dark transition-colors"
-                      >
-                        {event.price === 0 ? "Register Free" : "Book"}
-                      </Link>
+                      {event.isMembersOnly && !isLoggedIn ? (
+                        <Link
+                          href="/play-options"
+                          className="flex items-center gap-1.5 font-quicksand font-bold text-sm text-forest bg-forest-light px-4 py-2 rounded-pill"
+                        >
+                          <Lock size={12} /> Members Only
+                        </Link>
+                      ) : (
+                        <Link
+                          href={event.stripePaymentLink ?? `/contact?type=Special+Events&event=${encodeURIComponent(event.title)}`}
+                          target={event.stripePaymentLink ? "_blank" : undefined}
+                          rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
+                          className="font-quicksand font-bold text-sm text-white bg-forest px-4 py-2 rounded-pill hover:bg-forest-dark transition-colors"
+                        >
+                          {event.price === 0 ? "Register Free" : "Book"}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </AnimatedSection>

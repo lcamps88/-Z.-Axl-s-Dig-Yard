@@ -10,7 +10,15 @@ export const metadata: Metadata = {
     "Get in touch with Z. Axl's Dig Yard — general questions, party inquiries, and more.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ event?: string; type?: string }>;
+}) {
+  const { event, type } = await searchParams;
+  const defaultInquiryType = type ?? (event ? "Special Events" : "");
+  const defaultMessage = event ? `I'd like to register for: ${decodeURIComponent(event)}` : "";
+
   return (
     <>
       <PageHero
@@ -25,7 +33,7 @@ export default function ContactPage() {
             {/* Form */}
             <AnimatedSection direction="left">
               <p className="label-tag mb-6">Send a Message</p>
-              <ContactForm />
+              <ContactForm defaultInquiryType={defaultInquiryType} defaultMessage={defaultMessage} />
             </AnimatedSection>
 
             {/* Info */}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import { getEvent } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/client";
+import { createClient } from "@/lib/supabase/server";
 import { Calendar, Clock, DollarSign, Users, Lock, ArrowLeft, ExternalLink } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -34,10 +35,15 @@ function SimpleBody({ value }: { value: any[] }) {
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = await getEvent(slug);
+  const [event, supabase] = await Promise.all([getEvent(slug), createClient()]);
   if (!event) notFound();
 
-  const bookingHref = event.stripePaymentLink ?? "/contact";
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+  const isLocked = event.isMembersOnly && !isLoggedIn;
+
+  const contactFallback = `/contact?type=Special+Events&event=${encodeURIComponent(event.title)}`;
+  const bookingHref = event.stripePaymentLink ?? contactFallback;
   const bookLabel = event.price === 0 ? "Reserve a Spot — Free" : event.price != null ? `Book Now — $${event.price}` : "Book Now";
 
   return (
@@ -123,22 +129,52 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               )}
 
               {/* Booking CTA */}
-              <div className="border-t border-light-gray pt-8 flex flex-col sm:flex-row items-center gap-4">
-                <Link
-                  href={bookingHref}
-                  target={event.stripePaymentLink ? "_blank" : undefined}
-                  rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
-                  className="inline-flex items-center gap-2 font-quicksand font-bold text-white bg-forest px-8 py-3.5 rounded-pill hover:bg-forest-dark transition-colors text-sm"
-                >
-                  {bookLabel}
-                  {event.stripePaymentLink && <ExternalLink size={14} />}
-                </Link>
-                <Link
-                  href="/contact"
-                  className="font-quicksand font-bold text-sm text-dusk-soft hover:text-dusk transition-colors"
-                >
-                  Have questions? Contact us
-                </Link>
+              <div className="border-t border-light-gray pt-8">
+                {isLocked ? (
+                  <div className="bg-forest-light rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-forest/10 rounded-full flex items-center justify-center shrink-0">
+                        <Lock size={18} className="text-forest" />
+                      </div>
+                      <div>
+                        <p className="font-quicksand font-bold text-dusk text-sm">Members Only Event</p>
+                        <p className="font-body text-xs text-dusk-soft">This event is reserved for Z. Axl's Dig Yard members.</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-3 sm:ml-auto">
+                      <Link
+                        href="/play-options"
+                        className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
+                      >
+                        Become a Member
+                      </Link>
+                      <Link
+                        href="/portal"
+                        className="inline-flex items-center font-quicksand font-bold text-sm text-forest border border-forest px-6 py-2.5 rounded-pill hover:bg-forest-light transition-colors"
+                      >
+                        Sign In
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <Link
+                      href={bookingHref}
+                      target={event.stripePaymentLink ? "_blank" : undefined}
+                      rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
+                      className="inline-flex items-center gap-2 font-quicksand font-bold text-white bg-forest px-8 py-3.5 rounded-pill hover:bg-forest-dark transition-colors text-sm"
+                    >
+                      {bookLabel}
+                      {event.stripePaymentLink && <ExternalLink size={14} />}
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className="font-quicksand font-bold text-sm text-dusk-soft hover:text-dusk transition-colors"
+                    >
+                      Have questions? Contact us
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@ import PageHero from "@/components/ui/PageHero";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Link from "next/link";
 import { getEvents } from "@/lib/sanity/queries";
+import { createClient } from "@/lib/supabase/server";
 import { Calendar, DollarSign, Users, Lock } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ function formatTime(dateStr: string) {
 }
 
 export default async function SpecialEventsPage() {
-  const events = await getEvents();
+  const [events, supabase] = await Promise.all([getEvents(), createClient()]);
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
 
   return (
     <>
@@ -108,14 +111,23 @@ export default async function SpecialEventsPage() {
                         >
                           View Details
                         </Link>
-                        <Link
-                          href={event.stripePaymentLink ?? "/contact"}
-                          target={event.stripePaymentLink ? "_blank" : undefined}
-                          rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
-                          className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
-                        >
-                          {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
-                        </Link>
+                        {event.isMembersOnly && !isLoggedIn ? (
+                          <Link
+                            href="/play-options"
+                            className="inline-flex items-center gap-1.5 font-quicksand font-bold text-sm text-forest bg-forest-light px-6 py-2.5 rounded-pill"
+                          >
+                            <Lock size={13} /> Members Only
+                          </Link>
+                        ) : (
+                          <Link
+                            href={event.stripePaymentLink ?? `/contact?type=Special+Events&event=${encodeURIComponent(event.title)}`}
+                            target={event.stripePaymentLink ? "_blank" : undefined}
+                            rel={event.stripePaymentLink ? "noopener noreferrer" : undefined}
+                            className="inline-flex items-center font-quicksand font-bold text-sm text-white bg-forest px-6 py-2.5 rounded-pill hover:bg-forest-dark transition-colors"
+                          >
+                            {event.price === 0 ? "Reserve a Spot (Free)" : "Book Now"}
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
