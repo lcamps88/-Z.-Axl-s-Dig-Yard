@@ -25,9 +25,6 @@ const NAV_LEFT = [
     ],
   },
   { label: "Plan Your Visit", href: "/plan-your-visit" },
-];
-
-const NAV_RIGHT = [
   {
     label: "Play & Celebrations",
     href: "/celebrations",
@@ -39,6 +36,9 @@ const NAV_RIGHT = [
       { label: "Programming", href: "/programming" },
     ],
   },
+];
+
+const NAV_RIGHT = [
   {
     label: "Resources",
     href: "/blog",
