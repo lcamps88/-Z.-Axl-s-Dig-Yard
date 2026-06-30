@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Shovel, Star } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import Image from "next/image";
 
 /* ── Wavy SVG dividers ─────────────────────────────────────── */
 function WaveDown({ fill = "#C8DFF0" }: { fill?: string }) {
@@ -38,10 +39,10 @@ function DottedDivider() {
 
 /* ── Service cards data ─────────────────────────────────────── */
 const SERVICES = [
-  { icon: "🏖️", title: "Open Play Sessions", body: "Drop-in anytime. No schedules, just open-ended play." },
-  { icon: "🎟️", title: "Membership Plans", body: "Regular access to the dig yard. Build your child's emotional toolkit." },
-  { icon: "🎂", title: "Birthday Celebrations", body: "Guided gatherings and workshops designed for families who dig deep." },
-  { icon: "✨", title: "Special Events", body: "Guided gatherings and workshops designed for families who dig deep." },
+  { icon: "/categories-events/open-play-sessions.svg", title: "Open Play Sessions", body: "Drop-in anytime. No schedules, just open-ended play." },
+  { icon: "/categories-events/membership-plans.svg", title: "Membership Plans", body: "Regular access to the dig yard. Build your child's emotional toolkit." },
+  { icon: "/categories-events/birthday-celebrations.svg", title: "Birthday Celebrations", body: "Guided gatherings and workshops designed for families who dig deep." },
+  { icon: "/categories-events/special-events.svg", title: "Special Events", body: "Guided gatherings and workshops designed for families who dig deep." },
 ];
 
 const BLUEPRINT_ITEMS = [
@@ -240,7 +241,9 @@ export default function HomePage() {
             {SERVICES.map((s, i) => (
               <AnimatedSection key={s.title} delay={i * 0.08}>
                 <div className="bg-white rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-shadow text-center">
-                  <div className="text-4xl mb-3">{s.icon}</div>
+                  <div className="flex justify-center mb-3">
+                    <Image src={s.icon} alt={s.title} width={64} height={64} />
+                  </div>
                   <h3 className="font-display font-bold text-sm text-dusk mb-2">{s.title}</h3>
                   <p className="font-body text-xs text-dusk-soft leading-relaxed">{s.body}</p>
                 </div>
